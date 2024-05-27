@@ -8,8 +8,9 @@ class Player:
         self.image = pygame.image.load("images/player.png")
         self.image = pygame.transform.scale(self.image, (16, 16))
         self.rect = self.image.get_rect()
-        self.rect.topleft = (x-self.rect.w, y-self.rect.h)
+        self.rect.center = (x, y)
         self.speed = 1
+        self.position = (0, 0)   # 0,0 = center of the maze ; -1,-1 : West-Nord ; 1,1 : Est-Sud.
 
     """def update(self, event, all_walls):
         if event.type == pygame.KEYDOWN:
@@ -58,3 +59,9 @@ class Player:
                         return True
 
         return False
+
+    def update_position(self, all_rooms, size):
+        for row in range(size):
+            for col in range(size):
+                if all_rooms[row][col].rect.colliderect(self.rect):
+                    self.position = (((-size//2)+col+1), ((-size//2)+row+1))

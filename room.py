@@ -24,8 +24,11 @@ class Room:
         self.image = pygame.image.load("images/rooms/room_" + self.number + ".png")
         # self.image = pygame.transform.scale()
         self.rect = self.image.get_rect()
-        #self.rect.center = (x, y)   # position in the maze ;; when the player move is the maze that move ??
-        self.rect.topleft = (x+self.rect.w//2+5, y+self.rect.h//2+5)
+
+        # position in the maze ;; when the player move is the maze that move ??
+        self.rect.center = (x, y)
+
+        self.position = (0, 0)  # 0,0 = center of the maze ; -1,-1 : West-Nord ; 1,1 : Est-Sud.
 
         self.walls = get_walls(self.number, self.rect)
 
@@ -36,44 +39,17 @@ class Room:
         self.explored = False
         self.initialized = initialized   # For generation of the maze
 
-    def update(self, event, player):
-        self.visible = self.player_nearby(player)
+    def update_visibility(self, player, vision_range):
+        self.visible = abs(self.position[0]-player.position[0]) <= vision_range and abs(self.position[1]-player.position[1]) <= vision_range
+        if abs(self.position[0]-player.position[0]) == abs(self.position[1]-player.position[1]) == vision_range:
+            self.visible = False
 
     def print(self, screen):
-        #if self.visible:
-        screen.blit(self.image, self.rect)
+        if self.visible:
+            screen.blit(self.image, self.rect)
 
-        # for wall in self.walls:   # print walls ; use to change their colors or debugging.
+        # for wall in self.walls:   # print walls ; use to change their colors or for debugging.
         #    pygame.draw.rect(screen, (255, 20, 50), wall)
-
-    def player_nearby(self, player):
-        if abs(self.rect.x-player.rect.x) <= 2*self.rect.w and abs(self.rect.y-player.rect.y) <= 2*self.rect.h:
-            return True
-        else:
-            return False
-
-    def modify(self, x=0, y=0, initialized=False, criteria=None, special=None):
-        if x != 0:
-            self.rect.x += x
-        if y != 0:
-            self.rect.y += y
-        if criteria is not None:  # exemple criteria : "-1--"
-            for i in range(4):
-                if criteria[i] == '1' or criteria[i] == '0':
-                    tmp = list(self.number)
-                    tmp[i] = criteria[i]
-                    self.number = "".join(tmp)
-                else:
-                    tmp = list(self.number)
-                    tmp[i] = randint(0, 1)
-                    self.number = "".join(tmp)
-
-            self.walls = get_walls(self.number, self.rect)
-        self.image = pygame.image.load("images/rooms/room_" + self.number + ".png")
-        # self.image = pygame.transform.scale()
-        if special is not None:
-            self.special = special
-        self.initialized = initialized
 
 
 def get_walls(number, room_rect):

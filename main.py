@@ -31,7 +31,7 @@ FPS = 60
 
 # Create a window
 pygame.display.set_caption("Miner's Maze")
-width, height = 1080, 720
+width, height = 1820, 980   # 1080, 720
 screen = pygame.display.set_mode((width, height))   # , pygame.RESIZABLE
 
 # background

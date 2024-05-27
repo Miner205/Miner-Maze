@@ -1,7 +1,7 @@
 import pygame
 from random import randint
 import functions
-from room import Room
+from room import Room, get_walls
 import key
 
 
@@ -24,6 +24,8 @@ class Maze:
             for col in range(self.size):
                 self.all_walls.append(self.rooms[row][col].walls)
 
+        self.vision_range = 1   # 1 by default,2 with torch item.(1 = see 1 more room in each direction ; in 'gem' form)
+
     def run(self):
         #if self.rooms[row][col].visible:
         if self.keys_pressed.get(pygame.K_a):
@@ -35,13 +37,21 @@ class Maze:
         if self.keys_pressed.get(pygame.K_w):
             self.player.move_up(self.all_walls)
 
-    def update(self, event):
-        #if self.rooms[row][col].visible:
-        #self.player.update(event, self.all_walls)
+        if True in self.keys_pressed.values():
+            self.player.update_position(self.rooms, self.size)
+            # print("position : " + str(self.player.position))  # use for debugging.
 
         for row in range(self.size):
             for col in range(self.size):
-                self.rooms[row][col].update(event, self.player)
+                self.rooms[row][col].update_visibility(self.player, self.vision_range)
+
+    def update(self, event):
+        # if self.rooms[row][col].visible:
+        # self.player.update(event, self.all_walls)
+        k=5
+        # for row in range(self.size):
+        #    for col in range(self.size):
+        #        self.rooms[row][col].update(event)
 
     def print(self, screen):
         for row in range(self.size):
@@ -51,8 +61,8 @@ class Maze:
 
 
 def generate_rooms(size, player):
-    rooms = [[Room(player.rect.x, player.rect.y) for _ in range(size)] for _ in range(size)]
-    rooms[size // 2][size // 2] = Room(player.rect.x, player.rect.y, True, "1111", "start")
+    rooms = [[Room(player.rect.x+player.rect.w//2, player.rect.y+player.rect.h//2) for _ in range(size)] for _ in range(size)]
+    rooms[size // 2][size // 2] = Room(player.rect.x+player.rect.w//2, player.rect.y+player.rect.h//2, True, "1111", "start")
     for row in range(size):
         for col in range(size):
             criteria = rooms[row][col].number
@@ -76,7 +86,23 @@ def generate_rooms(size, player):
             if col != size-1 and rooms[row][col+1].initialized:
                 criteria = new_number(criteria, rooms[row][col+1].number, 'west')
 
-            rooms[row][col].modify(((-size//2)+col)*rooms[row][col].rect.w, ((-size//2)+row)*rooms[row][col].rect.h, True, criteria)
+            # modify room :
+            rooms[row][col].rect.x += ((-size//2)+col+1)*rooms[row][col].rect.w
+            rooms[row][col].rect.y += ((-size//2)+row+1)*rooms[row][col].rect.h
+            for i in range(4):
+                if criteria[i] == '1' or criteria[i] == '0':
+                    tmp = list(rooms[row][col].number)
+                    tmp[i] = criteria[i]
+                    rooms[row][col].number = "".join(tmp)
+                else:
+                    tmp = list(rooms[row][col].number)
+                    tmp[i] = randint(0, 1)
+                    rooms[row][col].number = "".join(tmp)
+            rooms[row][col].walls = get_walls(rooms[row][col].number, rooms[row][col].rect)
+            rooms[row][col].image = pygame.image.load("images/rooms/room_" + rooms[row][col].number + ".png")
+            # rooms[row][col].special = special
+            rooms[row][col].initialized = True
+            rooms[row][col].position = (((-size//2)+col+1), ((-size//2)+row+1))
 
     return rooms
 
