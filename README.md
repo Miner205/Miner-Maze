@@ -6,3 +6,5 @@ Projet Python pygame personnel
 - Github : https://github.com/Miner205/Miner-Maze
 
 - To run : run main.py
+
+Bug to verif : le joueur ralentit plus on explore ? Le jeu lag ?

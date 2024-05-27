@@ -18,7 +18,7 @@ if __name__ == '__main__':
 # Success system ?
 # github
 # Teleportation ?
-# Minimap
+# Minimap and Map ?
 # Solo, mutli ?
 # skins ?
 
@@ -42,7 +42,7 @@ running = True
 
 player = Player(width//2, height//2)
 maze = Maze("hard", player)
-functions.print_matrix(maze.rooms)
+functions.print_matrix_nb(maze.rooms)
 
 while running:
 

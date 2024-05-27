@@ -1,6 +1,6 @@
 # file for definitions of some useful functions
 
-def print_matrix(m):
+def print_matrix_nb(m):
     for row in range(len(m)):
         for col in range(len(m[row])):
             print(m[row][col].number, end=" ")

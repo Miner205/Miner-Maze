@@ -40,13 +40,20 @@ class Room:
         self.initialized = initialized   # For generation of the maze
 
     def update_visibility(self, player, vision_range):
-        self.visible = abs(self.position[0]-player.position[0]) <= vision_range and abs(self.position[1]-player.position[1]) <= vision_range
-        if abs(self.position[0]-player.position[0]) == abs(self.position[1]-player.position[1]) == vision_range:
-            self.visible = False
+        self.visible = abs(self.position[0]-player.position[0])+abs(self.position[1]-player.position[1]) <= vision_range
+        if not self.explored and abs(self.position[0]-player.position[0])+abs(self.position[1]-player.position[1]) == 0:
+            self.explored = True
 
     def print(self, screen):
         if self.visible:
             screen.blit(self.image, self.rect)
+
+            if self.special == "start":
+                pygame.draw.rect(screen, (0, 0, 255), (self.rect.x+32, self.rect.y+32, 22, 22))
+            if self.special == "end":
+                pygame.draw.rect(screen, (255, 0, 0), (self.rect.x+32, self.rect.y+32, 22, 22))
+            if self.special == "teleport":
+                pygame.draw.rect(screen, (150, 0, 255), (self.rect.x+32, self.rect.y+32, 22, 22))
 
         # for wall in self.walls:   # print walls ; use to change their colors or for debugging.
         #    pygame.draw.rect(screen, (255, 20, 50), wall)

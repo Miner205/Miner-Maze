@@ -3,6 +3,10 @@ from functions import convertbinaire
 from random import randint
 
 
+class Item:
+    # torch, etc.
+    def __init__(self):
+
 class Key:
     # key_number is like : "-:Red,-:Green,-:Blue", and 0 = 0 and 1 = 255.
 
@@ -13,3 +17,6 @@ class Key:
         self.rect = self.image.get_rect()
 
 
+
+class Inventory:
+    def __init__(self):

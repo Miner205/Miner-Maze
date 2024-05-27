@@ -2,7 +2,8 @@ import pygame
 from random import randint
 import functions
 from room import Room, get_walls
-import key
+# from items import Key
+from minimap import Minimap
 
 
 # like game.py
@@ -25,6 +26,7 @@ class Maze:
                 self.all_walls.append(self.rooms[row][col].walls)
 
         self.vision_range = 1   # 1 by default,2 with torch item.(1 = see 1 more room in each direction ; in 'gem' form)
+        self.minimap = Minimap()
 
     def run(self):
         #if self.rooms[row][col].visible:
@@ -44,6 +46,8 @@ class Maze:
         for row in range(self.size):
             for col in range(self.size):
                 self.rooms[row][col].update_visibility(self.player, self.vision_range)
+                if self.rooms[row][col].explored:
+                    self.minimap.explored_room.append(self.rooms[row][col])
 
     def update(self, event):
         # if self.rooms[row][col].visible:
@@ -58,6 +62,7 @@ class Maze:
             for col in range(self.size):
                 self.rooms[row][col].print(screen)
         self.player.print(screen)
+        self.minimap.print(screen, self.player.position)
 
 
 def generate_rooms(size, player):
