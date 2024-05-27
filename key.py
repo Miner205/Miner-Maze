@@ -1,4 +1,5 @@
 import pygame
+from functions import convertbinaire
 from random import randint
 
 
@@ -12,11 +13,3 @@ class Key:
         self.rect = self.image.get_rect()
 
 
-def convertbinaire(x, k):
-    """convert integers(int), between 0 and 2^k-1, into binary(string), on k digits."""
-    result = ""
-    while x != 0:
-        result = str(x % 2) + result
-        x //= 2
-    result = '0'*(k-len(result)) + result
-    return result

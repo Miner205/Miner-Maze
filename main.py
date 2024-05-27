@@ -1,4 +1,5 @@
 import pygame
+import functions
 from maze import Maze
 from player import Player
 # from parameters import Options
@@ -36,11 +37,12 @@ screen = pygame.display.set_mode((width, height))   # , pygame.RESIZABLE
 # background
 # background = pygame.image.load("assets/background.jpeg")
 
+
 running = True
 
-maze = Maze()
-player = Player()
-
+player = Player(width//2, height//2)
+maze = Maze("hard", player)
+functions.print_matrix(maze.rooms)
 
 while running:
 
@@ -48,8 +50,11 @@ while running:
     current_time = pygame.time.get_ticks() // 1000
 
     # display the background
-    pygame.draw.rect(screen, (0, 0, 0), (0, 0, 1080, 720))
+    pygame.draw.rect(screen, (0, 20, 50), (0, 0, width, height))
     # screen.blit(background, (0, 0))
+
+    if running:
+        maze.run()
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -60,9 +65,16 @@ while running:
             running = False
             pygame.quit()
 
-        maze.update()
+        if event.type == pygame.KEYDOWN:
+            maze.keys_pressed[event.key] = True
 
-    maze.print()
+        if event.type == pygame.KEYUP:
+            maze.keys_pressed[event.key] = False
+
+        maze.update(event)
+
+    if running:
+        maze.print(screen)
 
     # Update the screen
     if running:
