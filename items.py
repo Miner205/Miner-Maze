@@ -3,12 +3,12 @@ from functions import convertbinaire
 from random import randint
 from math import sin
 
-
+"""
 class Item:
     # torch, etc.
-    def __init__(self):
+    def __init__(self):"""
 
-class Key:
+class Key:  """extension of Item ??"""
     # key_number is like : "-:Red,-:Green,-:Blue", and 0 = 0 and 1 = 255.
 
     def __init__(self, x, y):
@@ -29,7 +29,3 @@ class Key:
 
         if self.visible:
             screen.blit(self.image, self.rect)
-
-
-class Inventory:
-    def __init__(self):

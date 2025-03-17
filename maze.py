@@ -10,7 +10,7 @@ from minimap import Minimap
 class Maze:
     def __init__(self, difficulty, player):
         self.player = player
-        self.keys_pressed = {}
+        self.keys_pressed = set()
 
         self.difficulty = difficulty   # easy, medium or hard
         if self.difficulty == "easy":
@@ -32,16 +32,16 @@ class Maze:
 
     def run(self):   # /update
         #if self.rooms[row][col].visible:
-        if self.keys_pressed.get(pygame.K_a):
+        if pygame.K_a in self.keys_pressed:
             self.player.move_left(self.all_walls)
-        if self.keys_pressed.get(pygame.K_d):
+        if pygame.K_d in self.keys_pressed:
             self.player.move_right(self.all_walls)
-        if self.keys_pressed.get(pygame.K_s):
+        if pygame.K_s in self.keys_pressed:
             self.player.move_down(self.all_walls)
-        if self.keys_pressed.get(pygame.K_w):
+        if pygame.K_w in self.keys_pressed:
             self.player.move_up(self.all_walls)
 
-        if True in self.keys_pressed.values():
+        if self.keys_pressed:
             self.player.update_position(self.rooms, self.size)
             # print("position : " + str(self.player.position))  # use for debugging.
 

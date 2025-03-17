@@ -77,17 +77,16 @@ while running:
             pygame.quit()
 
         if event.type == pygame.KEYDOWN:
-            maze.keys_pressed[event.key] = True
+            maze.keys_pressed.add(event.key)
 
         if event.type == pygame.KEYUP:
-            maze.keys_pressed[event.key] = False
+            maze.keys_pressed.remove(event.key)
 
         maze.update(event)
 
     if running:
         maze.print(screen)
 
-    # Update the screen
-    if running:
+        # Update the screen
         pygame.display.flip()
         clock.tick(FPS)

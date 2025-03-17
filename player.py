@@ -65,3 +65,8 @@ class Player:
             for col in range(size):
                 if all_rooms[row][col].rect.colliderect(self.rect):
                     self.position = (((-size//2)+col+1), ((-size//2)+row+1))
+
+"""
+class Inventory:
+    def __init__(self):
+"""
