@@ -23,6 +23,6 @@ class Minimap:
                 color = (255, 255, 255)
             pygame.draw.rect(screen, color, (new_rect.x+room.position[0]*(new_rect.w+2),
                                              new_rect.y+room.position[1]*(new_rect.h+2), new_rect.w, new_rect.h))
-            pygame.draw.rect(screen, (255, 50, 0), (new_rect.x+player_pos[0]*(new_rect.w+2)+new_rect.w//4,
-                                                    new_rect.y+player_pos[1]*(new_rect.h+2)+new_rect.h//4, new_rect.w//2, new_rect.h//2))
+        pygame.draw.rect(screen, (255, 50, 0), (new_rect.x+player_pos[0]*(new_rect.w+2)+new_rect.w//4,
+                                                new_rect.y+player_pos[1]*(new_rect.h+2)+new_rect.h//4, new_rect.w//2, new_rect.h//2))
 

@@ -21,7 +21,7 @@ class Room:
                     tmp[i] = randint(0, 1)
                     self.number = "".join(tmp)
 
-        self.image = pygame.image.load("images/rooms/room_" + self.number + ".png")
+        self.image = pygame.image.load("./images/rooms/room_" + self.number + ".png")
         # self.image = pygame.transform.scale()
         self.rect = self.image.get_rect()
 

@@ -5,7 +5,7 @@ class Player:
     # Player.
 
     def __init__(self, x, y):
-        self.image = pygame.image.load("images/player.png")
+        self.image = pygame.image.load("./images/player.png")
         self.image = pygame.transform.scale(self.image, (16, 16))
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)

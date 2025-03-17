@@ -26,9 +26,11 @@ class Maze:
                 self.all_walls.append(self.rooms[row][col].walls)
 
         self.vision_range = 1   # 1 by default,2 with torch item.(1 = see 1 more room in each direction ; in 'gem' form)
+        self.global_vision = False
+        self.minimap_global_vision = False
         self.minimap = Minimap()
 
-    def run(self):
+    def run(self):   # /update
         #if self.rooms[row][col].visible:
         if self.keys_pressed.get(pygame.K_a):
             self.player.move_left(self.all_walls)
@@ -45,9 +47,15 @@ class Maze:
 
         for row in range(self.size):
             for col in range(self.size):
-                self.rooms[row][col].update_visibility(self.player, self.vision_range)
+                if self.global_vision:
+                    self.rooms[row][col].update_visibility(self.player, 50)
+                else:
+                    self.rooms[row][col].update_visibility(self.player, self.vision_range)
+                if self.minimap_global_vision:
+                    self.rooms[row][col].explored = True
                 if self.rooms[row][col].explored:
                     self.minimap.explored_room.append(self.rooms[row][col])
+
 
     def update(self, event):
         # if self.rooms[row][col].visible:
@@ -104,7 +112,7 @@ def generate_rooms(size, player):
                     tmp[i] = randint(0, 1)
                     rooms[row][col].number = "".join(tmp)
             rooms[row][col].walls = get_walls(rooms[row][col].number, rooms[row][col].rect)
-            rooms[row][col].image = pygame.image.load("images/rooms/room_" + rooms[row][col].number + ".png")
+            rooms[row][col].image = pygame.image.load("./images/rooms/room_" + rooms[row][col].number + ".png")
             # rooms[row][col].special = special
             rooms[row][col].initialized = True
             rooms[row][col].position = (((-size//2)+col+1), ((-size//2)+row+1))

@@ -21,6 +21,9 @@ if __name__ == '__main__':
 # Minimap and Map ?
 # Solo, mutli ?
 # skins ?
+# 42
+
+# !!!!!!!!!!! To Cf for Maze Algorithms : https://www.youtube.com/watch?v=uctN47p_KVk !!!!!!!!!!
 
 
 pygame.init()
@@ -44,14 +47,22 @@ player = Player(width//2, height//2)
 maze = Maze("hard", player)
 functions.print_matrix_nb(maze.rooms)
 
+# For Maze debbug :
+# maze.global_vision = True
+# maze.minimap_global_vision = True
+
 while running:
+
+    # display the background
+    pygame.draw.rect(screen, (0, 20, 60), (0, 0, width, height))
+    # screen.blit(background, (0, 0))
 
     # get the current time
     current_time = pygame.time.get_ticks() // 1000
-
-    # display the background
-    pygame.draw.rect(screen, (0, 20, 50), (0, 0, width, height))
-    # screen.blit(background, (0, 0))
+    # print the current time :
+    font = pygame.font.SysFont("ArialBlack", 20)
+    text = font.render('Time : {} s'.format(current_time), True, (0, 0, 0))
+    screen.blit(text, (30, 20))
 
     if running:
         maze.run()
