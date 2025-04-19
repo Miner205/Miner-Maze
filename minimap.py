@@ -4,7 +4,7 @@ import pygame
 class Minimap:
 
     def __init__(self):
-        self.explored_room = []
+        self.explored_rooms = []
 
 
     def print(self, screen, player_pos):
@@ -12,7 +12,7 @@ class Minimap:
 
         rect = pygame.Rect(screen.get_width() - 160, 32, 128, 128).center
         new_rect = pygame.Rect((rect[0]-4, rect[1]-4, 8, 8))
-        for room in self.explored_room:
+        for room in self.explored_rooms:
             if room.special == "start":
                 color = (0, 0, 255)
             elif room.special == "end":

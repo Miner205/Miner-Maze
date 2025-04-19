@@ -10,18 +10,9 @@ class Player:
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
         self.speed = 1
-        self.position = (0, 0)   # 0,0 = center of the maze ; -1,-1 : West-Nord ; 1,1 : Est-Sud.
-
-    """def update(self, event, all_walls):
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_a:
-                self.move_left(all_walls)
-            if event.key == pygame.K_d:
-                self.move_right(all_walls)
-            if event.key == pygame.K_s:
-                self.move_down(all_walls)
-            if event.key == pygame.K_w:
-                self.move_up(all_walls)"""
+        self.position = (0, 0)   # 0,0 = center of the maze ; -1,-1 : West-North ; 1,1 : East-South. ; position in maze ; for rooms visibility
+        self.vision_range = 1  # 1 by default,2 with torch item.(1 = see 1 more room in each direction ; in 'gem' form)
+        self.inventory = []
 
     def print(self, screen):
         screen.blit(self.image, self.rect)
@@ -63,10 +54,5 @@ class Player:
     def update_position(self, all_rooms, size):
         for row in range(size):
             for col in range(size):
-                if all_rooms[row][col].rect.colliderect(self.rect):
+                if all_rooms[row][col].rect.colliderect((self.rect.center[0], self.rect.center[1], 1, 1)):
                     self.position = (((-size//2)+col+1), ((-size//2)+row+1))
-
-"""
-class Inventory:
-    def __init__(self):
-"""

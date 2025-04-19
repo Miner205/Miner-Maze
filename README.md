@@ -8,12 +8,13 @@ Projet Python pygame personnel
 - To run : run main.py
 
 - rules and functionalities : ..
+  - default keys :
+    - move : w a s d
+    - run : left_shift
 
 - video about mazes : https://www.youtube.com/watch?v=uctN47p_KVk
 
 
-Bug to verif : le joueur ralentit plus on explore ? Le jeu lag ?
-c'est la minimap qui fait lag ? : oui le print de la minimap fait lag ! (mais seuleument après que le joueur bouge ./?)
 
 cf, only update the map when player changes of room ?
 
@@ -23,3 +24,14 @@ bug to fix : fix diagonal movement : https://www.youtube.com/shorts/0cYjreg7dpg
 
 
 cf player if player.position is egual to self.rect.x/.y-.w*0.5/-.h*0.5 ???
+
+ideas to implement : subroom/areas (9 areas in 1 room) , doors/gaps in walls not always at the center , 
+store room.number as an array of char/bool ?
+
+
+
+
+what to do for middle vision : if the player is between 2 rooms,
+show like the player is 1 room [the implemented version]
+show like the player is in the 2 rooms (need to modify how the player position is stored)
+?

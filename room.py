@@ -4,7 +4,7 @@ from random import randint
 
 
 class Room:
-    # room_number is like : "-:West,-:Sud,-:Est,-:Nord", and if - = 0 there is a wall, if - = 1 there is a door.
+    # room_number is like : "-:West,-:South,-:East,-:North", and if - = 0 there is a wall, if - = 1 there is a door.
 
     def __init__(self, x=0, y=0, initialized=False, criteria=None, special=None):
         # all rooms : self.rooms = [pygame.image.load("images/rooms/room_"+convertbinaire(i, 4)+".png") for i in range(16)]
@@ -28,24 +28,20 @@ class Room:
         # position in the maze ;; when the player move is the maze that move ??
         self.rect.center = (x, y)
 
-        self.position = (0, 0)  # 0,0 = center of the maze ; -1,-1 : West-Nord ; 1,1 : Est-Sud.
+        self.position = (0, 0)  # 0,0 = center of the maze ; -1,-1 : West-North ; 1,1 : East-South. ; position in maze
 
         self.walls = get_walls(self.number, self.rect)
 
         # States :
         self.special = special   # None or "start" or "end"
         self.reversed = False  # faire des rooms 'inversé' : avec couleur et controles inversé ?
-        self.visible = False   # /player nearby
-        self.explored = False
+        self.nearby = False    # player nearby
+        self.visible = False   # player nearby and path to player
+        self.explored = False  # have been visited by the player or not
         self.initialized = initialized   # For generation of the maze
 
-    def update_visibility(self, player, vision_range):
-        self.visible = abs(self.position[0]-player.position[0])+abs(self.position[1]-player.position[1]) <= vision_range
-        if not self.explored and abs(self.position[0]-player.position[0])+abs(self.position[1]-player.position[1]) == 0:
-            self.explored = True
-
     def print(self, screen):
-        if self.visible:
+        if self.visible:  # useless verification (for safety)
             screen.blit(self.image, self.rect)
 
             if self.special == "start":
@@ -68,19 +64,19 @@ def get_walls(number, room_rect):
     else:
         walls.append(pygame.Rect(room_rect.x, room_rect.y, 5, 86))
 
-    if number[1] == '1':   # Sud
+    if number[1] == '1':   # South
         walls.append(pygame.Rect(room_rect.x, room_rect.y+room_rect.h-5, 32, 5))
         walls.append(pygame.Rect(room_rect.x+54, room_rect.y+room_rect.h-5, 32, 5))
     else:
         walls.append(pygame.Rect(room_rect.x, room_rect.y+room_rect.h-5, 86, 5))
 
-    if number[2] == '1':   # Est
+    if number[2] == '1':   # East
         walls.append(pygame.Rect(room_rect.x+room_rect.w-5, room_rect.y, 5, 32))
         walls.append(pygame.Rect(room_rect.x+room_rect.w-5, room_rect.y+54, 5, 32))
     else:
         walls.append(pygame.Rect(room_rect.x+room_rect.w-5, room_rect.y, 5, 86))
 
-    if number[3] == '1':   # Nord
+    if number[3] == '1':   # North
         walls.append(pygame.Rect(room_rect.x, room_rect.y, 32, 5))
         walls.append(pygame.Rect(room_rect.x+54, room_rect.y, 32, 5))
     else:

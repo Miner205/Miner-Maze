@@ -1,7 +1,6 @@
 import pygame
 import functions
-from maze import Maze
-from player import Player
+from game import Game
 # from parameters import Options
 
 # To run to start the game.
@@ -42,14 +41,7 @@ screen = pygame.display.set_mode((width, height))   # , pygame.RESIZABLE
 
 
 running = True
-
-player = Player(width//2, height//2)
-maze = Maze("hard", player)
-functions.print_matrix_nb(maze.rooms)
-
-# For Maze debbug :
-# maze.global_vision = True
-# maze.minimap_global_vision = True
+game = Game(width, height, 100)
 
 while running:
 
@@ -64,8 +56,7 @@ while running:
     text = font.render('Time : {} s'.format(current_time), True, (0, 0, 0))
     screen.blit(text, (30, 20))
 
-    if running:
-        maze.run()
+    game.run()
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -76,16 +67,17 @@ while running:
             running = False
             pygame.quit()
 
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
+            game.update(event)
+
         if event.type == pygame.KEYDOWN:
-            maze.keys_pressed.add(event.key)
+            game.keys_pressed.add(event.key)
 
         if event.type == pygame.KEYUP:
-            maze.keys_pressed.remove(event.key)
-
-        maze.update(event)
+            game.keys_pressed.remove(event.key)
 
     if running:
-        maze.print(screen)
+        game.print(screen)
 
         # Update the screen
         pygame.display.flip()
